@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:airbnb_cost_calculator/models/req_models/cost_pred_req_model.dart';
+import 'package:airbnb_cost_calculator/models/res_models/cost_pred_res_model.dart';
+import 'package:airbnb_cost_calculator/services/api_service.dart';
+import 'package:airbnb_cost_calculator/uis/screens/result.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +24,7 @@ class CostPredController extends ChangeNotifier {
   String get selectedNeighbourhood => _selectedNeighbourhood;
   String get selectedRoomType => _selectedRoomType;
   int get selectedNumOfNights => _selectedNumOfNights;
+  bool get isLoading => _isLoading;
 
   //setters
   set setSelectedBurough(String val) => _selectedBurough = val;
@@ -30,6 +35,50 @@ class CostPredController extends ChangeNotifier {
   void resetIsLoading() {
     _isLoading = false;
     notifyListeners();
+  }
+
+  void getPredictions(BuildContext cxt) async {
+    // print("_selectedBurough: $_selectedBurough");
+    // print("_selectedNeighbourhood: $_selectedNeighbourhood");
+    // print("_selectedRoomType: $_selectedRoomType");
+    // print("_selectedNumOfNights: $_selectedNumOfNights");
+
+    try {
+      CostPredReqModel reqModel = CostPredReqModel(
+          neighbourhoodGroup: _selectedBurough,
+          neighbourhood: _selectedNeighbourhood,
+          roomType: _selectedRoomType,
+          nights: _selectedNumOfNights);
+
+      final res =
+          await ApiService.postRequest('/pred', bodyJson: reqModel.toJson());
+      if (res == null) return;
+
+      CostPredResModel resModel = CostPredResModel.fromRawJson(res.body);
+      if (resModel.pred == null && cxt.mounted) {
+        print('error from api in getPredictions:');
+        _isLoading = false;
+        notifyListeners();
+        const snackBar = SnackBar(
+          content: Text('Some error from endoint'),
+        );
+
+        // Find the ScaffoldMessenger in the widget tree
+        // and use it to show a SnackBar.
+        ScaffoldMessenger.of(cxt).showSnackBar(snackBar);
+      }
+
+      final Pred? data = resModel.pred;
+
+      if (cxt.mounted) {
+        Navigator.pushReplacement(
+            cxt, MaterialPageRoute(builder: (context) => ResultPreds(data!)));
+      }
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      print("getPredictions e: $e");
+    }
   }
 
   // void sendOtp(BuildContext cxt, SendOtpReqModel? reqModel) async {

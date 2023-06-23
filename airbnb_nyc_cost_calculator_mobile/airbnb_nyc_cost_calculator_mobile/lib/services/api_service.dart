@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://10.0.2.2:3001';
+  static const String baseUrl = 'http://10.0.2.2:5000';
 
   static Future<Response?> getRequest(String path, {String? token}) async {
     final url = Uri.parse('$baseUrl/$path');

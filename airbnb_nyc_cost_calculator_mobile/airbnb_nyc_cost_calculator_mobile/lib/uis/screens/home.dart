@@ -1,16 +1,19 @@
 import 'dart:convert';
 
 import 'package:airbnb_cost_calculator/constants/colors.dart';
+import 'package:airbnb_cost_calculator/providers/all_providers.dart';
+import 'package:airbnb_cost_calculator/uis/screens/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => _HomeState();
 }
 
 //borough
@@ -18,7 +21,7 @@ class Home extends StatefulWidget {
 //room type
 //nights
 
-class _HomeState extends State<Home> {
+class _HomeState extends ConsumerState<Home> {
   Map<String, dynamic>? neighbourhoodGroupsDict;
   Map<String, dynamic>? neighbourhoodDict;
   Map<String, dynamic>? roomTypeDict;
@@ -193,8 +196,11 @@ class _HomeState extends State<Home> {
           GestureDetector(
             onTap: () {
               if (_numOfNights.text == '') return;
+              if (ref.watch(costPredController).isLoading) {
+                return;
+              }
               if (_formKey.currentState!.validate()) {
-                //
+                ref.read(costPredController).getPredictions(context);
               }
             },
             child: Container(
@@ -205,7 +211,9 @@ class _HomeState extends State<Home> {
                   color: _numOfNights.text == '' ? Colors.grey : AppColors.red,
                   borderRadius: BorderRadius.circular(8)),
               child: Text(
-                "Get Estimated Cost",
+                ref.watch(costPredController).isLoading
+                    ? "Loading..."
+                    : "Get Estimated Cost",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
@@ -308,6 +316,10 @@ class _HomeState extends State<Home> {
                     GestureDetector(
                       onTap: () {
                         if (_selectedRoomType == '') return;
+
+                        ref.read(costPredController).setSelectedRoomType =
+                            _selectedRoomType;
+
                         if (_currentPage < 3) {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
@@ -441,6 +453,10 @@ class _HomeState extends State<Home> {
                         if (_selectedNeighbourhood == '') {
                           return;
                         }
+
+                        ref.read(costPredController).setSelectedNeighbourhood =
+                            _selectedNeighbourhood;
+
                         if (_currentPage < 3) {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
@@ -534,6 +550,9 @@ class _HomeState extends State<Home> {
                     GestureDetector(
                       onTap: () {
                         if (_selectedBurough == '') return;
+
+                        ref.read(costPredController).setSelectedBurough =
+                            _selectedBurough;
 
                         if (_currentPage < 3) {
                           _pageController.nextPage(
