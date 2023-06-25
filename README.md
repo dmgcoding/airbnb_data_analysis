@@ -46,12 +46,8 @@ After removing outliers in price column
 * No listings for Shared rooms in Bronx. Staten Island have only 14.
 
 ## What key factors drive price the most
-Key points
-* Queens is the busiest according to reviews per month, Manhattan is the least busy. So Manhattan is pricier but less busy.
-* Entire home/apt s in Bronx are the most busiest and shared rooms in Brooklyn are the least busy.
-* busiest listing's host is Row NYC. Listing is in Manhattan, Theater Ditrict. It's a private room. price is close to average(of price distribution), have 156 reviews and average of 58.5 reviews per month. That's 702 reviews per year. Listing's is available for 299 days around the year.
-* There are 42 listings with 0.01 average reviews per month. That is about 1 review per year. These are the least busiest. Brooklyn - 19, Manhattan - 19, Queens - 4.
-* Among them 28 listings are Entire home/apt and 14 are private rooms.
+We can see correlation between location and room type with the price. The other parameter doesn't show linear corrleation pattern with price.
+Only parameters that affect the price within a pattern is room_type, neighbourhood/location.
 
 ## Predictive model
 What can we predict? Do we have enough data to build a predictive model.
@@ -59,7 +55,13 @@ What can we predict? Do we have enough data to build a predictive model.
 * Preprocessing
 Preprocessing data to feed the model, split data for training, evaluating and testing
 * Model
-Try different regression models and see efficiency.
+What can we predict? Do we have enough data to build a predictive model.
+
+I have tried mulitple linear regression models to make a ml model that can predict the price of a listing with other parameters. But none of them were efficient. You can see the preprocessing and model fitting in 'airbnb_nyc_data_analyze_and_model_v2.ipynb' notebook. If you are seeing this in github repo there will be a notebook with that name. You can check that out.
+
+The reason we can't build a effient ml model is because we don't have enough data. Only corelation that we have with price is the location and room type. That is not enough. Let's say there are 2 listings in same neighourhood, both are private rooms but prices are significantly different. Why? because one is larger, more cozy, have free wifi, free breakfast, etc like other benefits that will drive it's price comparing to other property that doesn't have those benefits.
+
+We need more data/features/parameters to build a effient predictive model.
 
 ## Conclusion
 Price is mostly affected by location and room types. But still that's not enough to build a linear regression model. Dataset is good for EDA purpose but not enough parameters for a predictive model.
