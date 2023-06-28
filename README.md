@@ -4,6 +4,8 @@ Dataset I used describes the listing activity and metrics in NYC, NY for 2019.
 
 Dataset link > https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data
 
+Click below video for video explanation.
+
 [![thumbnail](https://img.youtube.com/vi/maXsgTVtMn4/0.jpg)](https://www.youtube.com/watch?v=maXsgTVtMn4)
 
 ## Problem Statement
