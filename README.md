@@ -4,6 +4,8 @@ Dataset I used describes the listing activity and metrics in NYC, NY for 2019.
 
 Dataset link > https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data
 
+[![thumbnail](https://img.youtube.com/vi/maXsgTVtMn4/0.jpg)](https://www.youtube.com/watch?v=maXsgTVtMn4)
+
 ## Problem Statement
 Dataset contains close to 49000 records with 16 columns. These columns consist of list title, host id, host name, borough, neighourhood, total reviews, etc. Dataset doesn't contain critical data like do they offer wifi, free meals, how many squarefeet is the property, etc which will affect the pricing of the listing.
 
